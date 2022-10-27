@@ -32,25 +32,33 @@ function countryHandler(e) {
         } else if (responseArray.length > 1 && responseArray.length < 10) {
             countryInfoEl.innerHTML = '';
 
-            countryListEl.innerHTML = responseArray.map(country => {
-                return `
-                <li><img src="${country['flags']['png']}" width = 100px></img>
-                <span> - ${country['name']['official']}</span></li>`;
-            }).join('');
+            countryListEl.innerHTML = markupList(responseArray);
         } else {
             countryListEl.innerHTML = '';
 
-            countryInfoEl.innerHTML = responseArray.map(country => {
-                return `
-                    <img src='${country['flags']['png']}' width = 200 heigth = 200/>
-                    <h2>${country['name']['official']}</h2>
-                    <p><span>Capital:</span> ${country['capital']}</p>
-                    <p><span>Population:</span> ${country['population']}</p>
-                    <p><span>Languages:</span> ${Object.values(country['languages']).join(', ')}</p>`
-            }).join('');
+            countryInfoEl.innerHTML = markupInfo(responseArray);
         }
     })
     .catch((array => {
         Notiflix.Notify.failure("Oops, there is no country with that name");
     }))
+}
+
+function markupList(array) {
+    return array.map(el => {
+        return `
+        <li><img src="${el['flags']['png']}" width = 100px></img>
+        <span> - ${el['name']['official']}</span></li>`;
+    }).join('');
+}
+
+function markupInfo(array) {
+    return array.map(el => {
+        return `
+            <img src='${el['flags']['png']}' width = 200 heigth = 200/>
+            <h2>${el['name']['official']}</h2>
+            <p><span>Capital:</span> ${el['capital']}</p>
+            <p><span>Population:</span> ${el['population']}</p>
+            <p><span>Languages:</span> ${Object.values(el['languages']).join(', ')}</p>`
+    }).join('');
 }
